@@ -2,6 +2,7 @@
 ## Description:
 - 8x8x8 Led Cube
 - 3 Animations
+- [Tinkercad simulation](https://www.tinkercad.com/things/0E8iJo0LGhg-3d-led-cube/editelsharecode=KA41W4sDzZWgZTIWBo5hIWgl1WsJMKcW8HfUU3VDTFQ=)
 ## Scheme:
 ![scheme](https://github.com/sami119/3D-LED-CUBE/blob/master/scheme-1.jpg)
 ## Particles:
