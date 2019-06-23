@@ -1,4 +1,4 @@
-# 3D-LED-CUBE
+﻿# 3D-LED-CUBE
 ## Description:
 - 8x8x8 Led Cube
 - 3 Animations
@@ -8,7 +8,7 @@
 ## Particles:
 //TODO
 ## About the code:
-//TODO
+-clearCube - Clears the cube of any running animations.
 ## Autors:
 [@sami119](https://github.com/sami119) <br />
 [@SlavKazakov](https://github.com/SlavKazakov) <br />
