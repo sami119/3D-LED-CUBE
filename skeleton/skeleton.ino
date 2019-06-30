@@ -1,3 +1,5 @@
+#include <SPI.h>
+
 //pins
 #define RED_LED 5
 #define GREEN_LED 7
@@ -54,6 +56,17 @@ void loop() {
     case ANIMATION_1: animation1(); break;
     case ANIMATION_2: animation2(); break;
     case ANIMATION_3: animation3(); break;
+  }
+}
+
+void renderCube() {
+  for (uint8_t i = 0; i < 8; i++) {
+    digitalWrite(SS, LOW);
+    SPI.transfer(0x01 << i);
+    for (uint8_t j = 0; j < 8; j++) {
+      SPI.transfer(cube[i][j]);
+    }
+    digitalWrite(SS, HIGH);
   }
 }
 
