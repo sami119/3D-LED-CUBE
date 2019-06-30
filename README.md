@@ -8,7 +8,9 @@
 ## Particles:
 //TODO
 ## About the code:
--clearCube - Clears the cube of any running animations.
+- clearCube - Clears the cube of any running animations.
+- loadingLeds - When loading the leds are shining red.
+- renderCube - transfers all the data from the array to hexademical and connects to the leds
 ## Autors:
 [@sami119](https://github.com/sami119) <br />
 [@SlavKazakov](https://github.com/SlavKazakov) <br />
