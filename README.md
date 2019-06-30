@@ -2,7 +2,6 @@
 ## Description:
 - 8x8x8 Led Cube
 - 3 Animations
-- [Tinkercad simulation](https://www.tinkercad.com/things/0E8iJo0LGhg-3d-led-cube/editelsharecode=KA41W4sDzZWgZTIWBo5hIWgl1WsJMKcW8HfUU3VDTFQ=)
 ## Scheme:
 ![scheme](https://github.com/sami119/3D-LED-CUBE/blob/master/scheme-1.jpg)
 ## Particles:
@@ -11,6 +10,7 @@
 - clearCube - Clears the cube of any running animations.
 - loadingLeds - When loading the leds are shining red.
 - renderCube - transfers all the data from the array to hexademical and connects to the leds
+- lightCube - Test animation - Checks if all leds are responive.
 ## Autors:
 [@sami119](https://github.com/sami119) <br />
 [@SlavKazakov](https://github.com/SlavKazakov) <br />

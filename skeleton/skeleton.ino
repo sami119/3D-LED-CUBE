@@ -7,7 +7,7 @@
 #define BUTTON_2 19
 
 //animations
-#define ANIMATION_1 0
+#define LIGHTCUBE 0
 #define ANIMATION_2 1
 #define ANIMATION_3 2
 
@@ -28,7 +28,7 @@ void setup() {
   
   //Sets the initial effect
   loading = true;
-  currentEffect = ANIMATION_1;
+  currentEffect = LIGHTCUBE;
   
   //The switch mode lights
   pinMode(RED_LED, OUTPUT);
@@ -72,16 +72,24 @@ void loop() {
   
   //changeEffect
   switch(currentEffect){
-    case ANIMATION_1: animation1(); break;
+    case LIGHTCUBE: lightCube(); break;
     case ANIMATION_2: animation2(); break;
     case ANIMATION_3: animation3(); break;
   }
 }
 
 //Animations
-void animation1(){
-  
-}
+//Test animation - Checks if all leds are responive.
+void lightCube() {
+  if (loading) {
+    clearCube();
+    for(uint8_t i=0; i<8; i++) {
+      for(uint8_t j=0; j<8; j++) {
+        cube[i][j] = 0xFF;
+      }
+    }
+    loading = false;
+  }
 
 void animation2(){
   
