@@ -3,7 +3,7 @@
 - 8x8x8 Led Cube
 - 3 Animations
 ## Scheme:
-![scheme](https://github.com/sami119/3D-LED-CUBE/blob/master/scheme-1.jpg)
+![scheme](https://github.com/sami119/3D-LED-CUBE/blob/master/Schematic/scheme-1.jpg)
 ## Particles:
 //TODO
 ## About the code:
