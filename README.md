@@ -8,9 +8,13 @@
 //TODO
 ## About the code:
 - clearCube - Clears the cube of any running animations.
-- loadingLeds - When loading the leds are shining red.
-- renderCube - transfers all the data from the array to hexademical and connects to the leds
-- lightCube - Test animation - Checks if all leds are responive.
+- loadingLeds - When loading: the leds are shining red.
+- renderCube - основната логика на програмата. Метода започва връзка чрез spi към shift регистрите, като след всеки клок са се пратили данни за конкретен ред от лампички.
+двумерния масив cube е 8битов. Като такъв той пази по един ред от лампички с дадено y(височина) и z(дълбочина). За по-лесна работа с някой от анимациите y e настроен да се брои от горе надолу.
+- lightCube - lights all the leds.
+- rain - анимация пресъздаваща дъжд. Тя използва метода shift като му предава да сменя по y надолу. Инициализира random брой капки и светва лампички на най горния ред по рандом y и z;
+- shift - сменя местата на реда от битове x със съседен в зависимост от дадената посоката
+- setVoxel - светва лампичка по дадено x y z
 ## Autors:
 [@sami119](https://github.com/sami119) <br />
 [@SlavKazakov](https://github.com/SlavKazakov) <br />
