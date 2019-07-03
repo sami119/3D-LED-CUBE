@@ -113,11 +113,11 @@ void planeBoing(){
   
 }
 
-void symbol{
+void symbol(){
   
 }
 
-void glow{
+void glow(){
   
 }
 
