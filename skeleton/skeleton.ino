@@ -26,15 +26,13 @@
 #define AXIS_Y 1
 #define AXIS_Z 2
 
-//variables
+//timer
 uint16_t timer;
-uint16_t modeTimer;
+
+//main variables
 int8_t currentEffect;
 uint8_t cube[8][8];
 bool loading;
-uint8_t selX = 0;
-uint8_t selY = 0;
-uint8_t selZ = 0;
 
 void setup() {
   //connection setup
@@ -61,34 +59,166 @@ void loop() {
     currentEffect ++;
     loading = true;
     clearCube();
+
     if(currentEffect >= TOTAL){
       currentEffect = 0;
     }
+    
     loadingLeds();
   } 
+  
   if(digitalRead(BUTTON_2)){
     currentEffect --;
     loading = true;
     clearCube();
+    
     if(currentEffect < 0){
       currentEffect = TOTAL - 1;
     }
+    
     loadingLeds();
   }
   
   //change effects
   switch(currentEffect){
     //case LIGHTCUBE: lightCube(); break;
-    case RAIN: rain(); modeTimer = RAIN_TIME; break;
+    case RAIN: rain(); break;
     case PLANEBOING: planeBoing(); break;
     case SYMBOL: symbol(); break;
     case GLOW: glow(); break; 
   }
+  
   renderCube();
 }
 
 //Animations
+//RAIN animation
+void rain(){
+  if(loading){
+    clearCube();
+    loading = false;
+  }
+  
+  timer++;
+  
+  if(timer > RAIN_TIME){
+    uint8_t numDrops = random(0, 5);
+    timer = 0;
+    shift(NEG_Y);
+    
+    for(uint8_t i = 0; i < numDrops; i++){
+      setVoxel(random(0,8), 7, random(0,8));
+    }
+  }
+}
+
+//Plane Boing Animation
+int planeCounter;
+
+void planeBoing(){
+  if(loading){
+    clearCube();
+    planeCounter=0;
+    loading = false;
+  }
+  
+  if(planeCounter == AXIS_X){
+    planeBoing(AXIS_X);
+  }
+  
+  if(planeCounter == AXIS_Y){
+    planeBoing(AXIS_Y);
+  }
+  
+  if(planeCounter == AXIS_Z){
+    planeBoing(AXIS_Z);
+  }
+}
+
+void planeBoing(int plane){
+  for(int i = 0; i < 8; i++){
+    fill(0x00);
+    setPlane(plane, i);
+    delay(500); 
+  }
+  
+  for (int i=7;i>=0;i--){
+    fill(0x00);
+    setPlane(plane,i);
+    delay(500);
+  }
+}
+
+//Symbol animation
+void symbol(){
+  
+}
+
+//Glowing animation
+bool glowing;
+uint16_t glowCount = 0;
+
+//select
+uint8_t selX = 0;
+uint8_t selY = 0;
+uint8_t selZ = 0;
+
+void glow(){
+  if (loading) {
+    clearCube();
+    glowCount = 0;
+    glowing = true;
+    loading = false;
+  }
+  
+  timer++;
+ 
+  if(timer > GLOW_TIME){
+    timer = 0;
+    
+    if(glowing){
+      if(glowCount < 256){
+        do{
+          randomLED();    
+        }
+        while (getVoxel(selX, selY, selZ));
+        
+        setVoxel(selX, selY, selZ);
+        glowCount++; 
+      }
+      else{
+      glowing = false;
+      glowCount = 0;
+      }
+    }
+    else{
+      if(glowCount < 256){
+        do{
+           randomLED();
+        }
+        while (!getVoxel(selX, selY, selZ));
+        
+        clearVoxel(selX, selY, selZ);
+        glowCount++; 
+      }
+      else{
+        clearCube();
+        glowing = true;
+        glowCount = 0;
+      }
+    }
+  }
+}
+
+
+void randomLed(){
+  selX = random(0,8);
+  selY = random(0,8);
+  selZ = random(0,8);   
+}
+
 /*
+//all leds shine
 void lightCube() {
   if (loading) {
     clearCube();
@@ -102,100 +232,9 @@ void lightCube() {
 }
 */
 
-void rain(){
-  if(loading){
-    clearCube();
-    loading = false;
-  }
-  timer++;
-  if(timer > modeTimer){
-    timer = 0;
-    shift(NEG_Y);
-    uint8_t numDrops = random(0, 5);
-    for(uint8_t i = 0; i < numDrops; i++){
-      setVoxel(random(0,8), 7, random(0,8));
-    }
-  }
-}
-
-int planeCounter;
-
-void planeBoing(){
-  if(loading){
-    clearCube();
-    planeCounter=0;
-    loading = false;
-  }
-  if(planeCounter == AXIS_X){
-    planeBoing(AXIS_X);
-  }
-  if(planeCounter == AXIS_Y){
-    planeBoing(AXIS_Y);
-  }
-  if(planeCounter == AXIS_Z){
-    planeBoing(AXIS_Z);
-  }
-}
-
-void planeBoing(int plane){
-  for(int i = 0; i < 8; i++){
-    fill(0x00);
-    setPlane(plane, i);
-    delay(500); 
-  }
-  for (int i=7;i>=0;i--){
-    fill(0x00);
-    setPlane(plane,i);
-    delay(500);
-  }
-}
-
-void symbol(){
-  
-}
-
-bool glowing;
-uint16_t glowCount = 0;
-
-void glow(){
- if (loading) {
-    clearCube();
-    glowCount = 0;
-    glowing = true;
-    loading = false;
-  }
- timer++;
-  if(timer > GLOW_TIME){
-    timer = 0;
-      if(glowing){
-        if(glowCount < 256){
-          do{
-            randomLED();    
-          }while (getVoxel(selX, selY, selZ));
-        setVoxel(selX, selY, selZ);
-        glowCount++; 
-        }else{
-        glowing = false;
-        glowCount = 0;
-      }      
-  }else{
-    if(glowCount < 256){
-        do{
-           randomLED();
-          }while (!getVoxel(selX, selY, selZ));
-        clearVoxel(selX, selY, selZ);
-        glowCount++; 
-      }else{
-        clearCube();
-        glowing = true;
-        glowCount = 0;
-      }
-    }
-  }
-}
-
 //Main methods used in the loop
 
+//fills the cube with pattern of 8bits
 void fill(uint8_t pattern){
   for(int y = 0; y<8; y++){
     for(int z = 0; z<8; z++){
@@ -240,12 +279,17 @@ void loadingLeds(){
 void setVoxel(uint8_t x, uint8_t y, uint8_t z){
   cube[7-y][7-z] != (0x01 << x);
 }
+
+//clears the led by given x, y and z
 void clearVoxel(uint8_t x, uint8_t y, uint8_t z) {
   cube[7 - y][7 - z] ^= (0x01 << x);
 }
+
+//returns true if the given led is shining
 bool getVoxel(uint8_t x, uint8_t y, uint8_t z) {
   return (cube[7 - y][7 - z] & (0x01 << x)) == (0x01 << x);
 }
+
 //shifts the lights in the given direction
 void shift(uint8_t dir){
   if(dir == NEG_Y){
@@ -257,6 +301,7 @@ void shift(uint8_t dir){
   }
 }
 
+//sets a plane of 8x8 bits to light
 void setPlane(int axis, uint8_t i){
   for (uint8_t j = 0; j < 8; j++) {
     for (uint8_t k = 0; k < 8; k++) {
@@ -267,9 +312,4 @@ void setPlane(int axis, uint8_t i){
       }
     }
   }
-}
-void randomLED(){
-  selX = random(0,8);
-  selY = random(0,8);
-  selZ = random(0,8);   
 }
