@@ -20,6 +20,11 @@
 //shifts
 #define NEG_Y 0
 
+//axis
+#define AXIS_X 0
+#define AXIS_Y 1
+#define AXIS_Z 2
+
 //variables
 uint16_t timer;
 uint16_t modeTimer;
@@ -109,8 +114,36 @@ void rain(){
   }
 }
 
+int planeCounter;
+
 void planeBoing(){
-  
+  if(loading){
+    clearCube();
+    planeCounter=0;
+    loading = false;
+  }
+  if(planeCounter == AXIS_X){
+    planeBoing(AXIS_X);
+  }
+  if(planeCounter == AXIS_Y){
+    planeBoing(AXIS_Y);
+  }
+  if(planeCounter == AXIS_Z){
+    planeBoing(AXIS_Z);
+  }
+}
+
+void planeBoing(int plane){
+  for(int i = 0; i < 8; i++){
+    fill(0x00);
+    setPlane(plane, i);
+    delay(500); 
+  }
+  for (int i=7;i>=0;i--){
+    fill(0x00);
+    setPlane(plane,i);
+    delay(500);
+  }
 }
 
 void symbol(){
@@ -122,6 +155,15 @@ void glow(){
 }
 
 //Main methods used in the loop
+
+void fill(uint8_t pattern){
+  for(int y = 0; y<8; y++){
+    for(int z = 0; z<8; z++){
+      cube[y][z] = pattern;  
+    }
+  }
+}
+
 //renders the array of bits to lights
 void renderCube() {
   for (uint8_t i = 0; i < 8; i++) {
@@ -161,11 +203,23 @@ void setVoxel(uint8_t x, uint8_t y, uint8_t z){
 
 //shifts the lights in the given direction
 void shift(uint8_t dir){
- if(dir == NEG_Y){
-  for(uint8_t y = 7; y > 0; y--){
-    for(uint8_t z = 1; z < 8; z++){
-      cube[y][z] = cube[y - 1][z];
+  if(dir == NEG_Y){
+    for(uint8_t y = 7; y > 0; y--){
+      for(uint8_t z = 1; z < 8; z++){
+        cube[y][z] = cube[y - 1][z];
+      }
     }
   }
- }
+}
+
+void setPlane(int axis, uint8_t i){
+  for (uint8_t j = 0; j < 8; j++) {
+    for (uint8_t k = 0; k < 8; k++) {
+      switch(axis){
+        case AXIS_X: setVoxel(i, j, k); break;
+        case AXIS_Y: setVoxel(j, i, k); break;
+        case AXIS_Z: setVoxel(j, k, i); break;
+      }
+    }
+  }
 }
