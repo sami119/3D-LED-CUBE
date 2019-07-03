@@ -151,12 +151,13 @@ void symbol() {
       /*when the position of the char is at the end of the cube
         it begins the animation movement again
       */
-
       charCounter++;
+      
       if (charCounter > len - 1)
       {
         charCounter = 0;
       }
+      
       charPosition = 0;
 
     }
