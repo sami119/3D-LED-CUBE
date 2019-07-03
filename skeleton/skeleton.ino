@@ -75,6 +75,7 @@ void loop() {
 }
 
 //Animations
+/*
 void lightCube() {
   if (loading) {
     clearCube();
@@ -86,6 +87,7 @@ void lightCube() {
     }
   }
 }
+*/
 
 void rain(){
   if(loading){
@@ -110,11 +112,11 @@ void animation3(){
 //Main methods used in the loop
 //renders the array of bits to lights
 void renderCube() {
-  for (uint8_t y = 0; y < 8; y++) {
+  for (uint8_t i = 0; i < 8; i++) {
     digitalWrite(SS, LOW);//begins transfering data
-    SPI.transfer(0x01 << (7 - y));//y counts from top to bottom
-    for (uint8_t z = 0; z < 8; z++) {
-      SPI.transfer(cube[y][z]);
+    SPI.transfer(0x01 << (7 - i));//y counts from top to bottom
+    for (uint8_t j = 0; j < 8; j++) {
+      SPI.transfer(cube[i][j]);
     }
     digitalWrite(SS, HIGH);//closes conection
   }
@@ -150,7 +152,7 @@ void shift(uint8_t dir){
  if(dir == NEG_Y){
   for(uint8_t y = 7; y > 0; y--){
     for(uint8_t z = 1; z < 8; z++){
-      cube[y][z] = cube[y - 1][z]; 
+      cube[y][z] = cube[y - 1][z];
     }
   }
  }
