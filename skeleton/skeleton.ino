@@ -7,10 +7,12 @@
 #define BUTTON_2 19
 
 //animations
-#define LIGHTCUBE 0
-#define RAIN 1
-#define ANIMATION_3 2
-#define TOTAL 3
+//#define LIGHTCUBE 0
+#define RAIN 0
+#define PLANEBOING 1
+#define SYMBOL 2
+#define GLOW 3
+#define TOTAL 4
 
 //times
 #define RAIN_TIME 260
@@ -39,7 +41,7 @@ void setup() {
 
   randomSeed(analogRead(0));
 
-  currentEffect = LIGHTCUBE;
+  currentEffect = RAIN;
   digitalWrite(GREEN_LED, HIGH);
   loading = false;
 }
@@ -67,9 +69,11 @@ void loop() {
   
   //change effects
   switch(currentEffect){
-    case LIGHTCUBE: lightCube(); break;
+    //case LIGHTCUBE: lightCube(); break;
     case RAIN: rain(); modeTimer = RAIN_TIME; break;
-    case ANIMATION_3: animation3(); break;
+    case PLANEBOING: planeBoing(); break;
+    case SYMBOL: symbol(); break;
+    case GLOW: glow(); break; 
   }
   renderCube();
 }
@@ -105,7 +109,15 @@ void rain(){
   }
 }
 
-void animation3(){
+void planeBoing(){
+  
+}
+
+void symbol{
+  
+}
+
+void glow{
   
 }
 
