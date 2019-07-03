@@ -16,6 +16,7 @@
 
 //times
 #define RAIN_TIME 260
+#define GLOW_TIME 8
 
 //shifts
 #define NEG_Y 0
@@ -26,6 +27,9 @@ uint16_t modeTimer;
 int8_t currentEffect;
 uint8_t cube[8][8];
 bool loading;
+uint8_t selX = 0;
+uint8_t selY = 0;
+uint8_t selZ = 0;
 
 void setup() {
   //connection setup
@@ -117,8 +121,44 @@ void symbol(){
   
 }
 
+bool glowing;
+uint16_t glowCount = 0;
+
 void glow(){
-  
+ if (loading) {
+    clearCube();
+    glowCount = 0;
+    glowing = true;
+    loading = false;
+  }
+ timer++;
+  if(timer > GLOW_TIME){
+    timer = 0;
+      if(glowing){
+        if(glowCount < 256){
+          do{
+            randomLED();    
+          }while (getVoxel(selX, selY, selZ));
+        setVoxel(selX, selY, selZ);
+        glowCount++; 
+        }else{
+        glowing = false;
+        glowCount = 0;
+      }      
+  }else{
+    if(glowCount < 256){
+        do{
+           randomLED();
+          }while (!getVoxel(selX, selY, selZ));
+        clearVoxel(selX, selY, selZ);
+        glowCount++; 
+      }else{
+        clearCube();
+        glowing = true;
+        glowCount = 0;
+      }
+    }
+  }
 }
 
 //Main methods used in the loop
@@ -158,7 +198,12 @@ void loadingLeds(){
 void setVoxel(uint8_t x, uint8_t y, uint8_t z){
   cube[7-y][7-z] != (0x01 << x);
 }
-
+void clearVoxel(uint8_t x, uint8_t y, uint8_t z) {
+  cube[7 - y][7 - z] ^= (0x01 << x);
+}
+bool getVoxel(uint8_t x, uint8_t y, uint8_t z) {
+  return (cube[7 - y][7 - z] & (0x01 << x)) == (0x01 << x);
+}
 //shifts the lights in the given direction
 void shift(uint8_t dir){
  if(dir == NEG_Y){
@@ -168,4 +213,9 @@ void shift(uint8_t dir){
     }
   }
  }
+}
+void randomLED(){
+  selX = random(0,8);
+  selY = random(0,8);
+  selZ = random(0,8);   
 }
