@@ -39,6 +39,11 @@
 //timer
 uint16_t timer;
 
+//select
+uint8_t selX = 0;
+uint8_t selY = 0;
+uint8_t selZ = 0;
+
 //main variables
 int8_t currentEffect;
 uint8_t cube[8][8];
@@ -181,13 +186,64 @@ void symbol() {
   }
 }
 
+uint8_t sendDirection = 0;
+bool sending = false;
 
-void sendVoxels(){
-  
+void sendVoxels() {
+  if (loading) {
+    clearCube();
+    loading = false;
+    for (uint8_t x = 0; x < 8; x++) {
+      for (uint8_t y = 0; y < 8; y++) {
+        setVoxel(x, y, random(0, 2) * 7);
+      }
+    }
+  }
+
+  timer++;
+  if (timer > SEND_VOXELS_TIME) {
+    timer = 0;
+
+    if (!sending) {
+      selX = random(0, 8);
+      selY = random(0, 8);
+
+      if (getVoxel(selX, selY, 0)) {
+        selZ = 0;
+        sendDirection = NEG_Z;
+      }
+      else if (getVoxel(selX, selY, 7)) {
+        selZ = 7;
+        sendDirection = POS_Z;
+      }
+
+      sending = true;
+    }
+    else {
+      if (sendDirection == POS_Z) {
+        selZ++;
+        setVoxel(selX, selY, selZ);
+        clearVoxel(selX, selY, selZ - 1);
+
+        if (selZ == 7) {
+          sending = false;
+        }
+      }
+      else {
+        selZ--;
+        setVoxel(selX, selY, selZ);
+        clearVoxel(selX, selY, selZ + 1);
+
+        if (selZ == 0) {
+          sending = false;
+        }
+      }
+    }
+  }
 }
 
-void woopWoop(){
-  
+void woopWoop() {
+
 }
 
 
@@ -232,11 +288,6 @@ void planeBoing(int plane) {
 //Glowing animation
 bool glowing;
 uint16_t glowCount = 0;
-
-//select
-uint8_t selX = 0;
-uint8_t selY = 0;
-uint8_t selZ = 0;
 
 void glow() {
   if (loading) {
