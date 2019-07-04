@@ -13,11 +13,15 @@
 #define SYMBOL 2
 #define GLOW 3
 #define TOTAL 4
+#define SEND_VOXELS 5
+#define WOOP_WOOP 6
 
 //times
 #define RAIN_TIME 260
 #define GLOW_TIME 8
 #define SYMBOL_TIME 300
+#define SEND_VOXELS_TIME 140
+#define WOOP_WOOP_TIME 350
 
 //shifts
 #define NEG_Y 0
@@ -91,6 +95,8 @@ void loop() {
     case PLANEBOING: planeBoing(); break;
     case SYMBOL: symbol(); break;
     case GLOW: glow(); break;
+    case SEND_VOXELS: sendVoxels(); break;
+    case WOOP_WOOP: woopWoop(); break;
   }
 
   renderCube();
@@ -174,6 +180,16 @@ void symbol() {
     }
   }
 }
+
+
+void sendVoxels(){
+  
+}
+
+void woopWoop(){
+  
+}
+
 
 //Plane Boing Animation
 int planeCounter;
