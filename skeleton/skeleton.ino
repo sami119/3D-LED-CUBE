@@ -194,6 +194,7 @@ void sendVoxels() {
   if (loading) {
     clearCube();
     loading = false;
+
     for (uint8_t x = 0; x < 8; x++) {
       for (uint8_t y = 0; y < 8; y++) {
         setVoxel(x, y, random(0, 2) * 7);
@@ -234,6 +235,7 @@ void sendVoxels() {
         selZ--;
         setVoxel(selX, selY, selZ);
         clearVoxel(selX, selY, selZ + 1);
+
         if (selZ == 0) {
           sending = false;
         }
@@ -254,29 +256,33 @@ void woopWoop() {
     CubeExpanding = true;
     loading = false;
   }
-  timer++;
 
-/*if the timer is more than WOOP_WOOP_TIME reset the timer
- * and if CubeExpanding is true the cube will continue to expand
- * until it reaches the size of 8and then the cube stops expanding
-*/
+  timer++;
+  /*if the timer is more than WOOP_WOOP_TIME reset the timer
+     and if CubeExpanding is true the cube will continue to expand
+     until it reaches the size of 8and then the cube stops expanding
+  */
   if (timer > WOOP_WOOP_TIME) {
     timer = 0;
+
     if (CubeExpanding) {
       cubeSize += 2;
+
       if (cubeSize == 8) {
         CubeExpanding = false;
       }
     }
     /*Starts decreasing the size of the cube until the size of 2 and then
-     * sets the CubeExpansion to true with starts the expansion again
-     */
+       sets the CubeExpansion to true with starts the expansion again
+    */
     else {
       cubeSize -= 2;
+
       if (cubeSize == 2) {
         CubeExpanding = true;
       }
     }
+
     clearCube();
     drawCube(4 - cubeSize / 2, 4 - cubeSize / 2, 4 - cubeSize / 2, cubeSize);
   }
