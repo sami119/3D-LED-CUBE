@@ -21,7 +21,11 @@
 
 //shifts
 #define NEG_Y 0
-#define NEG_Z 3
+#define NEG_Z 1
+#define NEG_X 2
+#define POS_X 3
+#define POS_Z 4
+#define POS_Y 5
 
 //axis
 #define AXIS_X 0
@@ -80,7 +84,6 @@ void loop() {
 
     loadingLeds();
   }
-
   //change effects
   switch (currentEffect) {
     //case LIGHTCUBE: lightCube(); break;
@@ -152,12 +155,12 @@ void symbol() {
         it begins the animation movement again
       */
       charCounter++;
-      
+
       if (charCounter > len - 1)
       {
         charCounter = 0;
       }
-      
+
       charPosition = 0;
 
     }
@@ -360,6 +363,40 @@ void shift(uint8_t dir) {
       for (uint8_t z = 7; z > 0; z--) {
         cube[y][z] = cube[y][z - 1];
       }
+    }
+  }
+  else if (dir == NEG_X) {
+    for (uint8_t y = 0; y < 8; y++) {
+      for (uint8_t z = 0; z < 8; z++) {
+        cube[y][z] = cube[y][z] >> 1;
+      }
+    }
+  }
+  else if (dir == POS_X) {
+    for (uint8_t y = 0; y < 8; y++) {
+      for (uint8_t z = 0; z < 8; z++) {
+        cube[y][z] = cube[y][z] << 1;
+      }
+    }
+  }
+  else if (dir == POS_Z) {
+    for (uint8_t y = 0; y < 8; y++) {
+      for (uint8_t z = 1; z < 8; z++) {
+        cube[y][z - 1] = cube[y][z];
+      }
+    }
+    for (uint8_t i = 0; i < 8; i++) {
+      cube[i][7] = 0;
+    }
+  }
+  else if (dir == POS_Y) {
+    for (uint8_t y = 1; y < 8; y++) {
+      for (uint8_t z = 0; z < 8; z++) {
+        cube[y - 1][z] = cube[y][z];
+      }
+    }
+    for (uint8_t i = 0; i < 8; i++) {
+      cube[7][i] = 0;
     }
   }
 }
