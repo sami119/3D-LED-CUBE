@@ -118,7 +118,8 @@ void rain() {
     shift(NEG_Y);
 
     for (uint8_t i = 0; i < numDrops; i++) {
-      setVoxel(random(0, 8), 7, random(0, 8));
+
+      (random(0, 8), 7, random(0, 8));
     }
   }
 }
@@ -182,12 +183,48 @@ void symbol() {
 }
 
 
-void sendVoxels(){
-  
+void sendVoxels() {
+
 }
 
-void woopWoop(){
-  
+//variables for WoopWoop animation
+uint8_t cubeSize = 0;
+bool CubeExpanding = true;
+
+//woop woop animation
+void woopWoop() {
+  if (loading) {
+    clearCube();
+    cubeSize = 2;
+    CubeExpanding = true;
+    loading = false;
+  }
+  timer++;
+
+/*if the timer is more than WOOP_WOOP_TIME reset the timer
+ * and if CubeExpanding is true the cube will continue to expand
+ * until it reaches the size of 8and then the cube stops expanding
+*/
+  if (timer > WOOP_WOOP_TIME) {
+    timer = 0;
+    if (CubeExpanding) {
+      cubeSize += 2;
+      if (cubeSize == 8) {
+        CubeExpanding = false;
+      }
+    }
+    /*Starts decreasing the size of the cube until the size of 2 and then
+     * sets the CubeExpansion to true with starts the expansion again
+     */
+    else {
+      cubeSize -= 2;
+      if (cubeSize == 2) {
+        CubeExpanding = true;
+      }
+    }
+    clearCube();
+    drawCube(4 - cubeSize / 2, 4 - cubeSize / 2, 4 - cubeSize / 2, cubeSize);
+  }
 }
 
 
@@ -427,5 +464,23 @@ void setPlane(int axis, uint8_t i) {
         case AXIS_Z: setVoxel(j, k, i); break;
       }
     }
+  }
+}
+
+//draws a cube using the setvoxel method
+void drawCube(uint8_t x, uint8_t y, uint8_t z, uint8_t s) {
+  for (uint8_t i = 0; i < s; i++) {
+    setVoxel(x, y + i, z);
+    setVoxel(x + i, y, z);
+    setVoxel(x, y, z + i);
+    setVoxel(x + s - 1, y + i, z + s - 1);
+    setVoxel(x + i, y + s - 1, z + s - 1);
+    setVoxel(x + s - 1, y + s - 1, z + i);
+    setVoxel(x + s - 1, y + i, z);
+    setVoxel(x, y + i, z + s - 1);
+    setVoxel(x + i, y + s - 1, z);
+    setVoxel(x + i, y, z + s - 1);
+    setVoxel(x + s - 1, y, z + i);
+    setVoxel(x, y + s - 1, z + i);
   }
 }
