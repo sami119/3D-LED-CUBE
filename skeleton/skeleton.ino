@@ -12,9 +12,9 @@
 #define PLANEBOING 1
 #define SYMBOL 2
 #define GLOW 3
-#define TOTAL 4
-#define SEND_VOXELS 5
-#define WOOP_WOOP 6
+#define SEND_VOXELS 4
+#define WOOP_WOOP 5
+#define TOTAL 6
 
 //times
 #define RAIN_TIME 260
@@ -143,13 +143,13 @@ uint8_t charPosition = 0;
 //Symbol animation
 void symbol() {
   //variables
-  char string[] {};
-  uint8_t len;
+  char string[]{};
+  uint8_t num = 4;
 
   if (loading)
   {
     clearCube();
-    charPosition = -1; //sets position before the the 0 location in the cube
+    charPosition = -1; //sets position before the 0 location in the cube
     charCounter = 0; //begins the chars in the characters 'database'
     loading = false;
   }
@@ -168,7 +168,7 @@ void symbol() {
       */
       charCounter++;
 
-      if (charCounter > len - 1)
+      if (charCounter > num - 1)
       {
         charCounter = 0;
       }
