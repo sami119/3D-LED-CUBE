@@ -14,8 +14,8 @@
 #define GLOW 4
 #define SEND_VOXELS 5
 #define WOOP_WOOP 6
-#define PATERN 7
-#define TOTAL 8
+//#define PATERN 7
+#define TOTAL 7
 
 //times
 #define RAIN_TIME 260
@@ -23,7 +23,7 @@
 #define SYMBOL_TIME 300
 #define SEND_VOXELS_TIME 140
 #define WOOP_WOOP_TIME 350
-#define PLANE_BOING_TIME 120
+#define PLANE_BOING_TIME 300
 
 //shifts
 #define POS_X 0
@@ -106,7 +106,7 @@ void loop() {
     case GLOW: glow(); break;
     case SEND_VOXELS: sendVoxels(); break;
     case WOOP_WOOP: woopWoop(); break;
-    case PATERN: pattern(); break;
+      //case PATERN: pattern(); break;
   }
 
   renderCube();
@@ -122,7 +122,6 @@ void renderCube() {
     }
 
     digitalWrite(SS, HIGH);
-    //delay(1);
   }
 }
 
@@ -150,10 +149,10 @@ void rain() {
 //Symbol Animation 'Database'
 uint8_t characters[4][8] = //small library with different symbols inside
 {
-  {0x0E, 0x11, 0x10, 0x0C, 0x10, 0x10, 0x11, 0x0E}, //3
-  {0x3C, 0x42, 0x40, 0x40, 0x3C, 0x02, 0x02, 0x7E}, //2
-  {0x10, 0x18, 0x14, 0x10, 0x10, 0x10, 0x10, 0x3C}, //1
   {0x66, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C, 0x18}, //<3
+  {0x10, 0x18, 0x14, 0x10, 0x10, 0x10, 0x10, 0x3C}, //1
+  {0x3C, 0x42, 0x40, 0x40, 0x3C, 0x02, 0x02, 0x7E}, //2
+  {0x0E, 0x11, 0x10, 0x0C, 0x10, 0x10, 0x11, 0x0E}, //3
 };
 
 uint8_t charCounter = 0;
@@ -415,39 +414,39 @@ void glow() {
 
         setVoxel(selX, selY, selZ);
         glowCount++;
-
-        if (glowCount < 512) {
-          for (uint8_t i = 0; i < 8; i++) {
-            for (uint8_t j = 0; j < 8; j++) {
-              cube[i][j] = 0xFF;
-            }
+      }
+      else if (glowCount < 512) {
+        for (uint8_t i = 0; i < 8; i++) {
+          for (uint8_t j = 0; j < 8; j++) {
+            cube[i][j] = 0xFF;
           }
-          glowCount++;
         }
-        else {
-          glowing = false;
-          glowCount = 0;
-        }
+        glowCount++;
       }
       else {
-        if (glowCount < 448) {
-          do {
-            randomLed();
-          }
-          while (!getVoxel(selX, selY, selZ));
+        glowing = false;
+        glowCount = 0;
+      }
+    }
+    else {
+      if (glowCount < 448) {
+        do {
+          randomLed();
+        }
+        while (!getVoxel(selX, selY, selZ));
 
-          clearVoxel(selX, selY, selZ);
-          glowCount++;
-        }
-        else {
-          clearCube();
-          glowing = true;
-          glowCount = 0;
-        }
+        clearVoxel(selX, selY, selZ);
+        glowCount++;
+      }
+      else {
+        clearCube();
+        glowing = true;
+        glowCount = 0;
       }
     }
   }
 }
+
 
 void randomLed() {
   selX = random(0, 8);
